@@ -1,0 +1,95 @@
+# Data Configuration File
+# This file defines data validation rules and constraints
+
+# Column Names and Types
+columns:
+  id: "id"
+  age: "age"
+  gender: "gender"
+  height: "height"
+  weight: "weight"
+  ap_hi: "ap_hi"
+  ap_lo: "ap_lo"
+  cholesterol: "cholesterol"
+  gluc: "gluc"
+  smoke: "smoke"
+  alco: "alco"
+  active: "active"
+  cardio: "cardio"
+
+# Data Types
+dtypes:
+  id: "int64"
+  age: "int64"
+  gender: "int64"
+  height: "int64"
+  weight: "float64"
+  ap_hi: "int64"
+  ap_lo: "int64"
+  cholesterol: "int64"
+  gluc: "int64"
+  smoke: "int64"
+  alco: "int64"
+  active: "int64"
+  cardio: "int64"
+
+# Valid Ranges (for data quality checks)
+valid_ranges:
+  age_days: [10950, 25550]  # 30-70 years in days
+  age_years: [30, 70]
+  height: [140, 210]  # cm
+  weight: [40, 200]  # kg
+  ap_hi: [90, 200]  # systolic BP
+  ap_lo: [60, 130]  # diastolic BP
+  bmi: [15, 50]
+  
+# Categorical Valid Values
+categorical_values:
+  gender: [1, 2]  # 1: female, 2: male
+  cholesterol: [1, 2, 3]  # 1: normal, 2: above normal, 3: well above normal
+  gluc: [1, 2, 3]  # 1: normal, 2: above normal, 3: well above normal
+  smoke: [0, 1]
+  alco: [0, 1]
+  active: [0, 1]
+  cardio: [0, 1]
+
+# Medical Reference Values
+medical_references:
+  # Blood Pressure Categories (mmHg)
+  blood_pressure:
+    normal: 
+      systolic: [90, 120]
+      diastolic: [60, 80]
+    elevated:
+      systolic: [120, 130]
+      diastolic: [60, 80]
+    hypertension_stage1:
+      systolic: [130, 140]
+      diastolic: [80, 90]
+    hypertension_stage2:
+      systolic: [140, 180]
+      diastolic: [90, 120]
+    hypertensive_crisis:
+      systolic: [180, 250]
+      diastolic: [120, 150]
+  
+  # BMI Categories (WHO)
+  bmi:
+    underweight: [0, 18.5]
+    normal: [18.5, 25]
+    overweight: [25, 30]
+    obese_class1: [30, 35]
+    obese_class2: [35, 40]
+    obese_class3: [40, 100]
+  
+  # Heart Rate (bpm) - for future extensions
+  heart_rate:
+    low: [40, 60]
+    normal: [60, 100]
+    high: [100, 150]
+
+# Data Quality Thresholds
+quality_thresholds:
+  max_missing_percentage: 5  # Maximum % of missing values allowed
+  min_unique_categorical: 2  # Minimum unique values for categorical features
+  duplicate_threshold: 0.01  # Maximum % of duplicate rows allowed

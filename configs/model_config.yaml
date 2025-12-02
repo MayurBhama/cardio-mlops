@@ -1,0 +1,124 @@
+# Model Configuration File
+# This file contains all hyperparameters and model settings
+
+# Data Paths
+data:
+  raw_data_path: "data/raw/cardio_train.csv"
+  processed_data_path: "data/processed/cardio_processed.csv"
+  external_data_path: "data/external/"
+  
+# Data Preprocessing
+preprocessing:
+  test_size: 0.2
+  validation_size: 0.15
+  random_state: 42
+  
+  # Age conversion (days to years)
+  age_conversion_factor: 365.25
+  
+  # Outlier detection parameters
+  outlier_detection:
+    method: "iqr"  # iqr or zscore
+    iqr_multiplier: 1.5
+    zscore_threshold: 3
+    
+  # Feature scaling
+  scaling:
+    method: "standard"  # standard or minmax
+    
+# Feature Engineering
+feature_engineering:
+  create_bmi: true
+  create_bp_features: true
+  create_age_groups: true
+  create_risk_scores: true
+  
+  # BMI categories (WHO standards)
+  bmi_categories:
+    underweight: [0, 18.5]
+    normal: [18.5, 25]
+    overweight: [25, 30]
+    obese: [30, 100]
+    
+  # Age groups
+  age_groups:
+    young: [0, 40]
+    middle: [40, 60]
+    senior: [60, 100]
+
+# Model Training
+models:
+  # Logistic Regression
+  logistic_regression:
+    C: 1.0
+    max_iter: 1000
+    solver: "lbfgs"
+    random_state: 42
+    
+  # Random Forest
+  random_forest:
+    n_estimators: 100
+    max_depth: 15
+    min_samples_split: 10
+    min_samples_leaf: 4
+    random_state: 42
+    n_jobs: -1
+    
+  # Gradient Boosting
+  gradient_boosting:
+    n_estimators: 100
+    learning_rate: 0.1
+    max_depth: 5
+    min_samples_split: 10
+    min_samples_leaf: 4
+    random_state: 42
+    
+  # XGBoost
+  xgboost:
+    n_estimators: 100
+    learning_rate: 0.1
+    max_depth: 5
+    min_child_weight: 3
+    gamma: 0
+    subsample: 0.8
+    colsample_bytree: 0.8
+    random_state: 42
+    eval_metric: "logloss"
+
+# Model Evaluation
+evaluation:
+  metrics:
+    - accuracy
+    - precision
+    - recall
+    - f1_score
+    - roc_auc
+  
+  # Cross-validation
+  cv_folds: 5
+  
+  # Threshold for classification
+  classification_threshold: 0.5
+
+# MLflow Configuration
+mlflow:
+  experiment_name: "cardiovascular_disease_prediction"
+  tracking_uri: "mlruns"
+  artifact_location: "models/model_artifacts"
+  
+# DVC Configuration
+dvc:
+  remote: "myremote"
+  cache_dir: ".dvc/cache"
+
+# API Configuration
+api:
+  host: "0.0.0.0"
+  port: 8000
+  debug: false
+  
+# Streamlit Configuration
+streamlit:
+  page_title: "CardioPredict - Heart Disease Prediction"
+  layout: "wide"
+  initial_sidebar_state: "expanded"
