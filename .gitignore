@@ -5,6 +5,48 @@ __pycache__/
 
 # C extensions
 *.so
+# --- PYTHON ---
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# --- ENVIRONMENTS ---
+venv/
+env/
+*.env
+
+# --- DATA DIRECTORIES (DO NOT TRACK) ---
+data/raw/
+data/processed/
+data/train/
+data/test/
+data/validation/
+data/*.csv
+
+# --- MODEL ARTIFACTS ---
+models/trained_models/
+!models/trained_models/.gitignore   # keep folder, ignore contents
+
+# --- MLflow ---
+mlruns/
+mlartifacts/
+
+# --- LOG FILES ---
+logs/
+
+# --- DVC ---
+.dvc/cache/
+.dvc/tmp/
+dvc.lock   # ignore lock, keep dvc.yaml
+
+# --- JUPYTER ---
+.ipynb_checkpoints/
+
+# --- SYSTEM FILES ---
+.DS_Store
+Thumbs.db
+
 
 # Distribution / packaging
 .Python
