@@ -1,0 +1,102 @@
+schema: '2.0'
+stages:
+  ingest:
+    cmd: python scripts/stage_ingest.py
+    deps:
+    - path: configs/data_config.yaml
+      hash: md5
+      md5: 89f79525562c98ed03ee877c982204fa
+      size: 2303
+    - path: data/raw/cardio_train.csv
+      hash: md5
+      md5: 71c46a70f7ba9e3e4736ae73ecd5bac9
+      size: 2941524
+    - path: scripts/stage_ingest.py
+      hash: md5
+      md5: dedf6d1528429de1421e435cdf629a49
+      size: 327
+    - path: src/data_ingestion/ingestion.py
+      hash: md5
+      md5: 558b03bd48275214595a4bf8f174e847
+      size: 8508
+    outs:
+    - path: data/processed/cardio_ingested.csv
+      hash: md5
+      md5: abd0273481ad4366e3b996a619ff4207
+      size: 3011525
+  clean:
+    cmd: python scripts/stage_clean.py
+    deps:
+    - path: configs/data_config.yaml
+      hash: md5
+      md5: 89f79525562c98ed03ee877c982204fa
+      size: 2303
+    - path: data/processed/cardio_ingested.csv
+      hash: md5
+      md5: abd0273481ad4366e3b996a619ff4207
+      size: 3011525
+    - path: scripts/stage_clean.py
+      hash: md5
+      md5: 896068e075423f37fbd800ca0c486558
+      size: 365
+    - path: src/data_processing/cleaning.py
+      hash: md5
+      md5: f2d6b7d09ef910a9b9e291dc9ab6f557
+      size: 12474
+    outs:
+    - path: data/processed/cardio_cleaned.csv
+      hash: md5
+      md5: aee3ed771143de98a742ee3c2b956ef2
+      size: 3138937
+  features:
+    cmd: python scripts/stage_features.py
+    deps:
+    - path: configs/model_config.yaml
+      hash: md5
+      md5: dc9a92bc618abfd0b2d5e0b506f418c2
+      size: 2547
+    - path: data/processed/cardio_cleaned.csv
+      hash: md5
+      md5: aee3ed771143de98a742ee3c2b956ef2
+      size: 3138937
+    - path: scripts/stage_features.py
+      hash: md5
+      md5: a5eb135fbe9fc38dc1e0fcf49c054440
+      size: 375
+    - path: src/feature_engineering/features.py
+      hash: md5
+      md5: 303f08d5e238af2ee89da0e204d0576d
+      size: 14000
+    outs:
+    - path: data/processed/cardio_featured.csv
+      hash: md5
+      md5: 8f68e2db18cb452770432320778e044a
+      size: 8134343
+  train:
+    cmd: python scripts/stage_train.py
+    deps:
+    - path: configs/model_config.yaml
+      hash: md5
+      md5: dc9a92bc618abfd0b2d5e0b506f418c2
+      size: 2547
+    - path: data/processed/cardio_featured.csv
+      hash: md5
+      md5: 8f68e2db18cb452770432320778e044a
+      size: 8134343
+    - path: scripts/stage_train.py
+      hash: md5
+      md5: a217a2caf540ef96da785de26c5212fe
+      size: 928
+    - path: src/model_training/train.py
+      hash: md5
+      md5: 519d5feda43ae3fe42d8a0bb2d99049f
+      size: 17121
+    outs:
+    - path: models/trained_models/best_model.pkl
+      hash: md5
+      md5: 9c0bb3bb7524a763491350454848c8b6
+      size: 246806
+    - path: models/trained_models/scaler.pkl
+      hash: md5
+      md5: 0e52f99cab9867d039419c78e1346c86
+      size: 1719

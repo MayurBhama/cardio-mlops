@@ -1,1 +1,41 @@
-# config
+stages:
+  ingest:
+    cmd: python scripts/stage_ingest.py
+    deps:
+      - scripts/stage_ingest.py
+      - src/data_ingestion/ingestion.py
+      - configs/data_config.yaml
+      - data/raw/cardio_train.csv
+    outs:
+      - data/processed/cardio_ingested.csv
+
+  clean:
+    cmd: python scripts/stage_clean.py
+    deps:
+      - scripts/stage_clean.py
+      - src/data_processing/cleaning.py
+      - data/processed/cardio_ingested.csv
+      - configs/data_config.yaml
+    outs:
+      - data/processed/cardio_cleaned.csv
+
+  features:
+    cmd: python scripts/stage_features.py
+    deps:
+      - scripts/stage_features.py
+      - src/feature_engineering/features.py
+      - data/processed/cardio_cleaned.csv
+      - configs/model_config.yaml
+    outs:
+      - data/processed/cardio_featured.csv
+
+  train:
+    cmd: python scripts/stage_train.py
+    deps:
+      - scripts/stage_train.py
+      - src/model_training/train.py
+      - data/processed/cardio_featured.csv
+      - configs/model_config.yaml
+    outs:
+      - models/trained_models/best_model.pkl
+      - models/trained_models/scaler.pkl
