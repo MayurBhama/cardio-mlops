@@ -19,6 +19,7 @@ import joblib
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
 import sys
+import os
 
 from utils.logger import logger
 from utils.exception import CustomException
@@ -29,8 +30,9 @@ from utils.exception import CustomException
 # =====================================================
 
 try:
-    MODEL_PATH = "models/trained_models/best_model.pkl"
-    SCALER_PATH = "models/trained_models/scaler.pkl"
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    MODEL_PATH = os.path.join(BASE_DIR, "model_artifacts/best_model.pkl")
+    SCALER_PATH = os.path.join(BASE_DIR, "model_artifacts/scaler.pkl")
 
     model = joblib.load(MODEL_PATH)
     scaler = joblib.load(SCALER_PATH)

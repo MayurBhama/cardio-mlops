@@ -1,0 +1,26 @@
+{
+    "features": [
+        "age_years",
+        "gender",
+        "height",
+        "weight",
+        "ap_hi",
+        "ap_lo",
+        "cholesterol",
+        "gluc",
+        "smoke",
+        "alco",
+        "active",
+        "bmi",
+        "bmi_category",
+        "pulse_pressure",
+        "mean_arterial_pressure",
+        "bp_category",
+        "age_group",
+        "lifestyle_risk_score",
+        "metabolic_risk_score",
+        "combined_risk_score"
+    ],
+    "n_features": 20,
+    "saved_at": "2025-12-03T01:19:44.743252"
+}

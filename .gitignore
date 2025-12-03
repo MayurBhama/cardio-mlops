@@ -24,9 +24,6 @@ data/test/
 data/validation/
 data/*.csv
 
-# --- MODEL ARTIFACTS ---
-models/trained_models/
-!models/trained_models/.gitignore   # keep folder, ignore contents
 
 # --- MLflow ---
 mlruns/
