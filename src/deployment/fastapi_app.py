@@ -65,6 +65,8 @@ FEATURE_COLUMNS = [
 # INPUT MODEL
 # =====================================================
 
+from pydantic import BaseModel, Field
+
 class PatientInput(BaseModel):
     age: int = Field(..., ge=18, le=100)
     gender: str
