@@ -7,7 +7,6 @@ Updated for Render Deployment + XGBoost Fix + Correct Paths
 - Handles hypotension safely
 - Returns prediction + risk + detailed interpretation
 """
-
 import pandas as pd
 import joblib
 import sys
@@ -27,27 +26,33 @@ from utils.exception import CustomException
 
 ROOT_DIR = Path(__file__).resolve().parents[2]
 
-MODEL_PATH = ROOT_DIR / "models" / "trained_models" / "best_model.pkl"
-SCALER_PATH = ROOT_DIR / "models" / "trained_models" / "scaler.pkl"
+# Moved model and scaler path definitions inside the main block to ensure ROOT_DIR is defined
+def main():
+    global MODEL_PATH, SCALER_PATH
+    MODEL_PATH = ROOT_DIR / "models" / "trained_models" / "best_model.pkl"
+    SCALER_PATH = ROOT_DIR / "models" / "trained_models" / "scaler.pkl"
+
+    # =====================================================
+    # LOAD MODEL + SCALER
+    # =====================================================
+
+    try:
+        model = joblib.load(MODEL_PATH)
+        scaler = joblib.load(SCALER_PATH)
+        logger.info(f"FastAPI: Loaded model from {MODEL_PATH}")
+        logger.info(f"FastAPI: Loaded scaler from {SCALER_PATH}")
+
+    except Exception as e:
+        logger.error("FastAPI: Failed to load model or scaler.")
+        raise CustomException(e, sys)
 
 
-# =====================================================
-# LOAD MODEL + SCALER
-# =====================================================
+    # =====================================================
+    # FEATURE COLUMNS — MUST MATCH TRAINING EXACTLY
+    # =====================================================
 
-try:
-    model = joblib.load(MODEL_PATH)
-    scaler = joblib.load(SCALER_PATH)
-    logger.info(f"FastAPI: Loaded model from {MODEL_PATH}")
-    logger.info(f"FastAPI: Loaded scaler from {SCALER_PATH}")
-
-except Exception as e:
-    logger.error("FastAPI: Failed to load model or scaler.")
-    raise CustomException(e, sys)
-
-
-# =====================================================
-# FEATURE COLUMNS — MUST MATCH TRAINING EXACTLY
+if __name__ == "__main__":
+    main()
 # =====================================================
 
 FEATURE_COLUMNS = [
