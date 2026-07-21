@@ -7,7 +7,6 @@ Updated for Render Deployment + XGBoost Fix + Correct Paths
 - Handles hypotension safely
 - Returns prediction + risk + detailed interpretation
 """
-
 import pandas as pd
 import joblib
 import sys
@@ -27,24 +26,28 @@ from utils.exception import CustomException
 
 ROOT_DIR = Path(__file__).resolve().parents[2]
 
-MODEL_PATH = ROOT_DIR / "models" / "trained_models" / "best_model.pkl"
-SCALER_PATH = ROOT_DIR / "models" / "trained_models" / "scaler.pkl"
-
+# Moved model and scaler paths inside the main function or after ROOT_DIR is defined
+# to avoid the NameError
 
 # =====================================================
 # LOAD MODEL + SCALER
 # =====================================================
 
-try:
-    model = joblib.load(MODEL_PATH)
-    scaler = joblib.load(SCALER_PATH)
-    logger.info(f"FastAPI: Loaded model from {MODEL_PATH}")
-    logger.info(f"FastAPI: Loaded scaler from {SCALER_PATH}")
+def load_model():
+    global model, scaler
+    MODEL_PATH = ROOT_DIR / "models" / "trained_models" / "best_model.pkl"
+    SCALER_PATH = ROOT_DIR / "models" / "trained_models" / "scaler.pkl"
+    try:
+        model = joblib.load(MODEL_PATH)
+        scaler = joblib.load(SCALER_PATH)
+        logger.info(f"FastAPI: Loaded model from {MODEL_PATH}")
+        logger.info(f"FastAPI: Loaded scaler from {SCALER_PATH}")
 
-except Exception as e:
-    logger.error("FastAPI: Failed to load model or scaler.")
-    raise CustomException(e, sys)
+    except Exception as e:
+        logger.error("FastAPI: Failed to load model or scaler.")
+        raise CustomException(e, sys)
 
+load_model()
 
 # =====================================================
 # FEATURE COLUMNS — MUST MATCH TRAINING EXACTLY
