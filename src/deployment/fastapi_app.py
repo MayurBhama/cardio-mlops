@@ -7,7 +7,6 @@ Updated for Render Deployment + XGBoost Fix + Correct Paths
 - Handles hypotension safely
 - Returns prediction + risk + detailed interpretation
 """
-
 import pandas as pd
 import joblib
 import sys
@@ -24,16 +23,13 @@ from utils.exception import CustomException
 # =====================================================
 # RESOLVE ROOT DIRECTORY (RENDER SAFE)
 # =====================================================
-
 ROOT_DIR = Path(__file__).resolve().parents[2]
-
-MODEL_PATH = ROOT_DIR / "models" / "trained_models" / "best_model.pkl"
-SCALER_PATH = ROOT_DIR / "models" / "trained_models" / "scaler.pkl"
-
 
 # =====================================================
 # LOAD MODEL + SCALER
 # =====================================================
+MODEL_PATH = ROOT_DIR / "models" / "trained_models" / "best_model.pkl"
+SCALER_PATH = ROOT_DIR / "models" / "trained_models" / "scaler.pkl"
 
 try:
     model = joblib.load(MODEL_PATH)
