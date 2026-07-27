@@ -22,28 +22,36 @@ from utils.exception import CustomException
 
 
 # =====================================================
-# RESOLVE ROOT DIRECTORY (RENDER SAFE)
-# =====================================================
-
-ROOT_DIR = Path(__file__).resolve().parents[2]
-
-MODEL_PATH = ROOT_DIR / "models" / "trained_models" / "best_model.pkl"
-SCALER_PATH = ROOT_DIR / "models" / "trained_models" / "scaler.pkl"
-
-
-# =====================================================
-# LOAD MODEL + SCALER
+# RESOLVE ROOT DIRECTORY (RENDER SAFE) & LOAD MODEL
 # =====================================================
 
 try:
+    ROOT_DIR = Path(__file__).resolve().parents[2]
+
+    MODEL_PATH = ROOT_DIR / "models" / "trained_models" / "best_model.pkl"
+    SCALER_PATH = ROOT_DIR / "models" / "trained_models" / "scaler.pkl"
+
     model = joblib.load(MODEL_PATH)
     scaler = joblib.load(SCALER_PATH)
     logger.info(f"FastAPI: Loaded model from {MODEL_PATH}")
     logger.info(f"FastAPI: Loaded scaler from {SCALER_PATH}")
 
 except Exception as e:
-    logger.error("FastAPI: Failed to load model or scaler.")
-    raise CustomException(e, sys)
+    import traceback
+    from datetime import datetime
+    import os
+    
+    logs_dir = "logs"
+    os.makedirs(logs_dir, exist_ok=True)
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    log_filename = f"error_{timestamp}.log"
+    log_path = os.path.join(logs_dir, log_filename)
+    
+    with open(log_path, "w", encoding="utf-8") as f:
+        traceback.print_exc(file=f)
+        
+    logger.error(f"FastAPI Initialization Error. Traceback written to {log_filename}")
+    raise e
 
 
 # =====================================================
